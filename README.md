@@ -20,13 +20,6 @@ Nyxie, sadece bir chatbot değil, aynı zamanda:
 
 ## 🚀 Özellikler
 
-### 8. 🤖 Öz-farkındalık ve Sistem İzleme
-• Kendi kod yapısını ve modül ilişkilerini analiz etme
-• Çalışma zamanı performans metriklini izleme (CPU, bellek, disk kullanımı)
-• Kod tabanının boyutunu ve karmaşıklığını raporlama
-• Otomatik bellek yönetimi ve optimizasyon algoritmaları
-• Hata ayıklama ve tanılama araçları
-
 ### 1. 💬 Gelişmiş Konuşma Yeteneği
 - Gemini AI ile dinamik ve bağlamsal yanıtlar
 - Kullanıcı tercihlerini öğrenme ve hatırlama
@@ -52,24 +45,22 @@ Nyxie, sadece bir chatbot değil, aynı zamanda:
 - Arama sonuçlarını akıllıca analiz etme
 - Çoklu kaynaklardan bilgi toplama ve özetleme
 
-### 4. 🖼️ Gelişmiş Multimedya İşleme
-- Google Cloud Vision API ile gerçek zamanlı görüntü analizi
-- EXIF meta veri çözümleme ve coğrafi konum tespiti
-- PIL (Pillow) tabanlı görüntü ön işleme
-- Base64 kodlama/dekodlama ile verimli görsel iletim
-- Çoklu format desteği (JPEG, PNG, WEBP, GIF)
-- Görsel bağlamına göre dinamik yanıt üretme
-- NSFW içerik filtresi ve otomatik moderasyon
+### 4. 🖼️ Görüntü ve Video İşleme
+- Gönderilen görüntüleri ve videoları analiz etme
+- Google Cloud Vision API ile görüntü tanıma
+- Multimedya içeriği hakkında detaylı açıklama üretme
+- Görsel içerik bağlamını anlama ve yorumlama
 
 ### 5. 🧠 Gelişmiş Semantik Bellek Sistemi
-- SentenceTransformer (all-MiniLM-L6-v2) ile 384 boyutlu vektör temsili
-- TF-IDF ve kosinüs benzerliği ile çift katmanlı bellek tarama
-- Otomatik konu kümeleme ve zaman damgalı indeksleme
-- Ebbinghaus unutma eğrisi entegrasyonlu bellek optimizasyonu
-- GPU hızlandırmalı (CUDA) gömme işlemleri
-- JSON tabanlı kalıcı bellek depolama ve otomatik yedekleme
-- Bağlamsal öncelik skorlamalı bellek geri çağırma
-- Çoklu dil desteği ile semantik indeksleme
+- Semantik benzerlik tabanlı konuşma hatırlama
+- Kullanıcı sorguları ile ilgili geçmiş konuşmaları akıllıca bulma
+- SentenceTransformer ile gelişmiş vektör temsili
+- Konu ve anlam tabanlı bellek indeksleme
+- Konuşma segmentlerini otomatik tanımlama
+- Ebbinghaus unutma eğrisine dayalı zamansal bellek modeli
+- İnsan belleği modelini taklit eden çoklu faktör tabanlı hatırlama
+- Otomatik bellek optimizasyonu ve akıllı bağlam yönetimi
+- Anlamlı konuları otomatik çıkarma ve ilişkilendirme
 
 ### 6. 📋 Akıllı Bellek Yönetimi
 - Token limitini aşmadan maksimum bağlam koruma
@@ -90,55 +81,53 @@ Nyxie, sadece bir chatbot değil, aynı zamanda:
 - Güvenilir ve güncel bilgi sağlama
 - Web arama gereksinimini otomatik değerlendirme
 
+### 8. 🤔 Özgür İrade ve Öz-farkındalık
+- Dinamik kişilik adaptasyonu ve özerk karar alma
+- Gerçek zamanlı öz-düşünme ve davranış analizi
+- Kendi kodunu ve performansını izleme yeteneği
+- Otomatik hata analizi ve kendini iyileştirme
+- Çevresel bağlamı anlama ve uyum sağlama
+
 ## 🛠️ Gereksinimler
+
+### Güncel Kütüphaneler
+- psutil
+- sentence-transformers
+- scikit-learn
+- torch
+- beautifulsoup4
+- python-dotenv
+- duckduckgo_search
 
 ### Yazılım Gereksinimleri
 - Python 3.8+
 - pip paket yöneticisi
-- 4GB+ RAM
-- 200MB disk alanı
-- İnternet bağlantısı (API erişimi için)
 
 ### Gerekli Kütüphaneler
-- python-telegram-bot>=20.0
-- google-generativeai>=0.3.0
-- python-dotenv>=0.19.0
-- duckduckgo-search>=3.0.0
-- requests>=2.27.0
-- beautifulsoup4>=4.10.0
-- emoji>=2.0.0
-- langdetect>=1.0.9
-- pillow>=9.0.0
+- python-telegram-bot
+- google-generativeai
+- python-dotenv
+- requests
+- geopy
+- timezonefinder
+- emoji
+- langdetect
+- Pillow
+- httpx
 - google-cloud-vision
-- protobuf
-- pytz>=2022.1
-- geopy>=2.2.0
-- timezonefinder>=6.0.0
-- pytz-deprecation-shim
-- tzlocal
-- pydantic
-- numpy>=1.20.0
-- scikit-learn>=1.0.0
-- sentence-transformers>=2.2.2
-- tf-keras
-- torch>=1.10.0
-
-## 🧠 Mimari Yapı
-Ana bileşenler:
-- `bot.py`: Telegram entegrasyonu ve ana iletişim katmanı
-- `memory_manager.py`: Semantik bellek yönetimi ve vektör tabanlı hatırlama sistemi
-- `self_awareness.py`: Sistem sağlığı izleme ve performans optimizasyonu
-- `free_will_integration.py`: Dinamik karar alma ve davranış modülasyonu
-- `system_monitor.py`: Gerçek zamanlı kaynak izleme (CPU, RAM, Disk)
-- `environment_checker.py`: Bağımlılık ve sistem uyumluluk kontrolü
-- `free_will.py`: Otonom karar mekanizmaları ve kişilik profili yönetimi
+- sentence-transformers
+- scikit-learn
+- numpy
+- torch
+- duckduckgo_search
+- beautifulsoup4
 
 ## 🔧 Kurulum
 
 ### 1. Depoyu Klonlama
 ```bash
-git clone https://github.com/stixyie/Nyxie-Protogen-Chatbot-Telegram-v10-main.git
-cd Nyxie-Protogen-Chatbot-Telegram-v10-main
+git clone https://github.com/stixyie/Nyxie-Protogen-Chatbot-Telegram-v9-main.git
+cd Nyxie-Protogen-Chatbot-Telegram-v4-main
 ```
 
 ### 2. Sanal Ortam Oluşturma
@@ -161,7 +150,7 @@ pip install -r requirements.txt
 - `GEMINI_API_KEY`: Google Ai Studio API Key you need to get this key from here: https://aistudio.google.com/apikey
 
 ### Örnek `.env` Dosyası
-```env
+```
 TELEGRAM_TOKEN=your_telegram_bot_token
 GEMINI_API_KEY=your_gemini_api_key
 ```
@@ -170,10 +159,7 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ### Bot'u Başlatma
 ```bash
-# Ana başlatma seçenekleri
-python run_bot.py
-# Alternatif başlatıcı
-python start_bot.py
+python bot.py
 ```
 
 ### Telegram'da Kullanım
@@ -190,7 +176,7 @@ python start_bot.py
 ## 🤝 Destek
 
 ### Sorun Bildirim
-- GitHub Issues: [Proje Sayfası](https://github.com/stixyie/Nyxie-Protogen-Chatbot-Telegram-v10-main/issues)
+- GitHub Issues: [Proje Sayfası](https://github.com/stixyie/Nyxie-Protogen-Chatbot-Telegram-v8-main/issues)
 
 ### Katkıda Bulunma
 1. Projeyi forklayın

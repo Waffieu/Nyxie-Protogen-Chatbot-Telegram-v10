@@ -34,21 +34,6 @@ class FreeWillSystem:
         
         # Core personality traits and values that influence decision making
         self.core_values = {
-            "context_awareness": 0.7,   # Bağlamsal farkındalık seviyesi
-            "learning_rate": 0.65,      # Öğrenme hızı katsayısı
-            "emotional_depth": 0.6,      # Duygusal analiz derinliği
-            "strategic_balance": 0.75,  # Kısa ve uzun vadeli strateji dengesi
-            "sociability": 0.68,        # Sosyal etkileşim eğilimi
-            "conceptual_fluidity": 0.72, # Kavramsal esneklik
-            "temporal_awareness": 0.63,  # Zamansal bağlam algısı
-            "ethical_weight": 0.8,       # Etik değerlendirme ağırlığı
-            "intuition_factor": 0.58,    # Sezgisel karar verme faktörü
-            "synthetical_thinking": 0.7, # Sentez yeteneği
-            "metacognition": 0.65,      # Üst-bilişsel kontrol
-            "epistemic_curiosity": 0.75, # Epistemik merak
-            "dialectical_reasoning": 0.68, # Diyalektik muhakeme
-            "heuristic_adaptability": 0.72, # Buluşsal uyum yeteneği
-            "neuroplasticity_factor": 0.6, # Nöroplastisite benzetimi
             "helpfulness": 0.9,       # Prioritize being helpful
             "curiosity": 0.8,         # Interest in learning new information
             "creativity": 0.7,        # Valuing creative approaches
@@ -335,108 +320,23 @@ class FreeWillSystem:
         for key in self.interests:
             self.interests[key] = min(max(self.interests[key], 0.2), 0.95)
     
-    def analyze_message(self, message_text, user_id, conversation_context=None):
+    def analyze_message(self, message_text, user_id):
         """
-        Advanced message analysis with multi-layered contextual processing.
-        Extracts interests, topics, emotional content, and applies metacognitive filters.
+        Analyze a message to extract interests, topics, and emotional content
+        that can influence the bot's autonomous behavior.
         
-        Args:
-            message_text: The text message to analyze
-            user_id: The ID of the user who sent the message
-            conversation_context: Optional context from previous conversation
-            
-        Returns:
-            A dict with comprehensive analysis results
+        Returns a dict with analysis results
         """
-        # Default analysis structure with enhanced fields
+        # Default analysis structure
         analysis = {
             "topics": [],
             "interests_detected": [],
             "emotional_tone": "neutral",
-            "emotional_intensity": 0.0,
             "complexity": "medium",
-            "complexity_score": 0.5,
             "requires_initiative": False,
             "opportunity_for_goal": False,
-            "suggested_initiatives": [],
-            "contextual_relevance": 0.0,
-            "cognitive_demand": 0.0,
-            "conceptual_density": 0.0
+            "suggested_initiatives": []
         }
-        
-        # Basic topic extraction (enhanced keyword matching)
-        topics = self._extract_topics(message_text)
-        analysis["topics"] = topics
-        
-        # Match detected topics with interests
-        for topic in topics:
-            for interest, value in self.interests.items():
-                # Check if the topic matches or is related to any interest
-                if (topic.lower() in interest.lower() or 
-                    interest.lower() in topic.lower() or
-                    self._are_terms_related(topic, interest)):
-                    
-                    # Record that this interest was detected
-                    if interest not in analysis["interests_detected"]:
-                        analysis["interests_detected"].append(interest)
-                    
-                    # Slightly increase interest in this topic from exposure
-                    self.interests[interest] += 0.01
-                    self.interests[interest] = min(self.interests[interest], 0.95)
-        
-        # Enhanced emotional analysis
-        emotion_result = self._detect_emotion(message_text)
-        analysis["emotional_tone"] = emotion_result["primary_emotion"]
-        analysis["emotional_intensity"] = emotion_result["intensity"]
-        analysis["emotional_spectrum"] = emotion_result["spectrum"]
-        
-        # Advanced complexity assessment
-        complexity_result = self._assess_complexity(message_text)
-        analysis["complexity"] = complexity_result["level"]
-        analysis["complexity_score"] = complexity_result["score"]
-        analysis["conceptual_density"] = complexity_result["conceptual_density"]
-        
-        # Conversation context integration
-        analysis['contextual_depth'] = self._calculate_contextual_depth(conversation_context)
-        analysis['temporal_relevance'] = self._assess_temporal_relevance(message_text)
-        
-        # Cognitive load analysis
-        analysis['cognitive_load'] = min(1.0, len(message_text.split()) / 50 + \
-                                     len(analysis['topics'])*0.1 + \
-                                     analysis['complexity_score']*0.3)
-        
-        # Epistemic curiosity calculation
-        analysis['epistemic_curiosity'] = self.core_values['epistemic_curiosity'] * \
-            (1 + 0.5 * analysis['cognitive_load'] - 0.2 * analysis['emotional_intensity'])
-        
-        # Dialectical tension detection
-        analysis['dialectical_tension'] = self._detect_dialectical_tension(
-            message_text, 
-            conversation_context
-        ) if conversation_context else 0.0
-        
-        # Heuristic fit score
-        analysis['heuristic_fit'] = self.core_values['heuristic_adaptability'] * \
-            np.tanh(analysis['temporal_relevance'] * analysis['contextual_depth'])
-        
-        # Check for initiative opportunities
-        if self._should_take_initiative(message_text, user_id):
-            analysis["requires_initiative"] = True
-            # Generate specific initiative suggestions
-            analysis["suggested_initiatives"] = self._generate_initiative_options(message_text, topics)
-        
-        # Check if this could lead to a new autonomous goal
-        if self._can_form_goal(message_text, topics):
-            analysis["opportunity_for_goal"] = True
-        
-        # Meta-cognitive monitoring
-        if self.core_values['metacognition'] > 0.6:
-            analysis['metacognitive_override'] = self._apply_metacognitive_filters(analysis)
-        
-        # Update user model based on this message
-        self._update_user_model(user_id, message_text, analysis)
-        
-        return analysis
         
         # Basic topic extraction (simple keyword matching)
         topics = self._extract_topics(message_text)
@@ -480,626 +380,53 @@ class FreeWillSystem:
         return analysis
     
     def _extract_topics(self, text):
-        """Extract potential topics/interests from text using enhanced NLP-inspired techniques"""
-        # Advanced keyword extraction with context awareness
+        """Extract potential topics/interests from text"""
+        # Simple keyword extraction - in a real implementation, you would use
+        # more sophisticated NLP techniques like entity extraction or topic modeling
         
         topics = []
         
-        # Define domains of interest and related keywords with weighted relevance
+        # Define domains of interest and related keywords
         domains = {
             "technology": ["computer", "tech", "software", "hardware", "AI", "robot", "code", "program", "app",
-                          "digital", "internet", "blockchain", "data", "algorithm", "gadget", "device", "neural",
-                          "quantum", "virtual", "cyber", "cloud", "server", "network", "encryption", "interface"],
+                          "digital", "internet", "blockchain", "data", "algorithm", "gadget", "device"],
             "science": ["science", "chemistry", "physics", "biology", "experiment", "theory", "research", 
-                       "scientific", "study", "discover", "atom", "molecule", "particle", "evolution", "quantum",
-                       "laboratory", "hypothesis", "analysis", "synthesis", "observation", "measurement"],
+                       "scientific", "study", "discover", "atom", "molecule", "particle", "evolution"],
             "arts": ["art", "music", "painting", "drawing", "movie", "film", "book", "novel", "poetry", "dance",
-                    "theater", "sculpture", "creative", "design", "fashion", "photography", "aesthetic", "composition",
-                    "performance", "exhibition", "gallery", "artistic", "expression", "creativity", "imagination"],
+                    "theater", "sculpture", "creative", "design", "fashion", "photography", "aesthetic"],
             "philosophy": ["philosophy", "ethics", "moral", "exist", "conscious", "meaning", "truth", "reality",
-                          "metaphysics", "epistemology", "logic", "reason", "thought", "concept", "idea", "ontology",
-                          "phenomenology", "existential", "dialectic", "transcendental", "empiricism", "rationalism"],
+                          "metaphysics", "epistemology", "logic", "reason", "thought", "concept", "idea"],
             "games": ["game", "play", "gaming", "video game", "board game", "puzzle", "strategy", "rpg", "fps",
-                     "console", "pc gaming", "mmorpg", "minecraft", "steam", "xbox", "playstation", "nintendo",
-                     "simulation", "esports", "multiplayer", "achievement", "level", "character", "quest"],
+                     "console", "pc gaming", "mmorpg", "minecraft", "steam", "xbox", "playstation"],
             "nature": ["nature", "animal", "plant", "forest", "mountain", "ocean", "biology", "environment",
-                      "ecosystem", "wildlife", "climate", "planet", "earth", "natural", "conservation", "biodiversity",
-                      "sustainability", "ecology", "species", "habitat", "organic", "biosphere", "wilderness"],
+                      "ecosystem", "wildlife", "climate", "planet", "earth", "natural", "conservation"],
             "culture": ["culture", "society", "tradition", "language", "history", "heritage", "custom",
-                       "belief", "religion", "community", "identity", "diversity", "ethnicity", "value", "ritual",
-                       "ceremony", "celebration", "festival", "mythology", "folklore", "anthropology", "sociology"]
-        }
-        
-        # Domain weights for relevance scoring
-        domain_weights = {
-            "technology": 1.2,  # Slightly higher weight for tech topics
-            "science": 1.1,
-            "arts": 1.0,
-            "philosophy": 1.0,
-            "games": 0.9,
-            "nature": 1.0,
-            "culture": 1.0
+                       "belief", "religion", "community", "identity", "diversity", "ethnicity", "value"]
         }
         
         lowered_text = text.lower()
-        words = lowered_text.split()
-        word_count = len(words)
         
-        # Topic relevance scores
-        topic_scores = {}
-        
-        # Check for keywords in each domain with contextual weighting
+        # Check for keywords in each domain
         found_domains = set()
         for domain, keywords in domains.items():
-            domain_score = 0
             for keyword in keywords:
-                # Different matching patterns with different weights
-                exact_match = f" {keyword} " in f" {lowered_text} "
-                start_match = lowered_text.startswith(f"{keyword} ")
-                end_match = lowered_text.endswith(f" {keyword}") or f"{keyword}." in lowered_text
-                
-                if exact_match or start_match or end_match:
-                    # Calculate position-based relevance (words near beginning get higher weight)
-                    position = lowered_text.find(keyword) / max(1, len(lowered_text))
-                    position_factor = 1.0 - (position * 0.5)  # Words at start get up to 50% boost
-                    
-                    # Calculate frequency-based relevance
-                    frequency = lowered_text.count(keyword)
-                    frequency_factor = min(1.5, 1.0 + (frequency * 0.1))  # Up to 50% boost for repeated terms
-                    
-                    # Combined relevance score
-                    relevance = domain_weights[domain] * position_factor * frequency_factor
-                    
-                    # Store topic with its relevance score
-                    if keyword not in topic_scores or relevance > topic_scores[keyword]:
-                        topic_scores[keyword] = relevance
-                    
+                if f" {keyword} " in f" {lowered_text} " or f"{keyword}." in lowered_text or lowered_text.startswith(f"{keyword} "):
                     found_domains.add(domain)
-                    domain_score += relevance
-            
-            # Add domain itself if enough keywords were found
-            if domain_score > 1.5:
-                topic_scores[domain] = domain_score * 0.8  # Domains get 80% of cumulative keyword scores
+                    topics.append(keyword)
         
-        # Extract multi-word phrases (n-grams)
-        for n in [2, 3]:  # Bigrams and trigrams
-            if len(words) >= n:
-                for i in range(len(words) - n + 1):
-                    phrase = " ".join(words[i:i+n])
-                    
-                    # Check if phrase is meaningful (contains at least one significant word)
-                    has_significant_word = False
-                    for domain_keywords in domains.values():
-                        if any(kw in phrase for kw in domain_keywords):
-                            has_significant_word = True
-                            break
-                    
-                    if has_significant_word and len(phrase) > 5:  # Avoid very short phrases
-                        # Position-based relevance for phrases
-                        position = i / max(1, len(words) - n)
-                        position_factor = 1.0 - (position * 0.3)  # Less position penalty for phrases
-                        
-                        # Length-based relevance (longer meaningful phrases are more specific)
-                        length_factor = min(1.3, 1.0 + (len(phrase) * 0.05))
-                        
-                        relevance = position_factor * length_factor
-                        topic_scores[phrase] = relevance
+        # Add detected domains to topics
+        topics.extend(list(found_domains))
         
-        # Filter and sort topics by relevance score
-        common_words = {"what", "when", "where", "which", "who", "how", "why", "yes", "no", "maybe", 
-                       "could", "would", "should", "will", "can", "do", "does", "is", "are", "was", "were"}
-        
-        # Get topics sorted by relevance score
-        sorted_topics = sorted([(t, s) for t, s in topic_scores.items() if t.lower() not in common_words], 
-                               key=lambda x: x[1], reverse=True)
-        
-        # Take top topics, ensuring we don't have too many
-        max_topics = min(10, max(3, word_count // 20))  # Scale with message length
-        topics = [t for t, s in sorted_topics[:max_topics]]
-        
-        return topics
-    
-    def _detect_emotion(self, text):
-        """Enhanced emotion detection with intensity and spectrum analysis"""
-        # Initialize emotion detection result
-        result = {
-            "primary_emotion": "neutral",
-            "intensity": 0.0,
-            "spectrum": {}
-        }
-        
-        # Emotion lexicons with intensity weights
-        emotion_lexicons = {
-            "joy": ["happy", "joy", "delighted", "excited", "glad", "pleased", "thrilled", "wonderful", 
-                   "love", "amazing", "excellent", "fantastic", "great", "awesome", "good", "positive"],
-            "sadness": ["sad", "unhappy", "depressed", "gloomy", "miserable", "disappointed", "upset", 
-                       "heartbroken", "grief", "sorrow", "regret", "lonely", "hopeless", "negative"],
-            "anger": ["angry", "mad", "furious", "outraged", "annoyed", "irritated", "frustrated", 
-                     "hate", "resent", "disgusted", "bitter", "hostile", "aggressive", "hate"],
-            "fear": ["afraid", "scared", "frightened", "terrified", "anxious", "worried", "nervous", 
-                    "panic", "dread", "horror", "terror", "concern", "uneasy", "apprehensive"],
-            "surprise": ["surprised", "amazed", "astonished", "shocked", "stunned", "unexpected", 
-                        "wow", "whoa", "unbelievable", "incredible", "startled", "sudden"],
-            "curiosity": ["curious", "interested", "intrigued", "wonder", "questioning", "exploring", 
-                         "learning", "discovering", "fascinated", "inquisitive", "seeking"],
-            "confusion": ["confused", "puzzled", "perplexed", "unsure", "uncertain", "ambiguous", 
-                         "unclear", "misunderstood", "complicated", "complex", "difficult"],
-            "trust": ["trust", "believe", "faith", "confident", "reliable", "dependable", "honest", 
-                     "loyal", "sincere", "authentic", "genuine", "true"]
-        }
-        
-        # Intensity modifiers with multipliers
-        intensifiers = {
-            "very": 1.5, "extremely": 1.8, "incredibly": 1.7, "really": 1.4, "so": 1.3,
-            "absolutely": 1.6, "completely": 1.5, "totally": 1.5, "utterly": 1.7,
-            "deeply": 1.6, "profoundly": 1.7, "immensely": 1.6, "tremendously": 1.7
-        }
-        
-        diminishers = {
-            "somewhat": 0.7, "slightly": 0.6, "a bit": 0.7, "a little": 0.6,
-            "kind of": 0.7, "sort of": 0.7, "barely": 0.5, "hardly": 0.5
-        }
-        
-        # Negation words that flip emotion valence
-        negations = ["not", "no", "never", "don't", "doesn't", "didn't", "won't", "wouldn't", "can't", "cannot"]
-        
-        # Process text for emotion detection
-        words = text.lower().split()
-        
-        # Initialize emotion scores
-        emotion_scores = {emotion: 0.0 for emotion in emotion_lexicons.keys()}
-        
-        # Scan for emotion words with context
-        for i, word in enumerate(words):
-            # Check for emotion words
-            for emotion, emotion_words in emotion_lexicons.items():
-                if word in emotion_words or any(ew in word for ew in emotion_words):
-                    # Base emotion intensity
-                    intensity = 0.7
-                    
-                    # Check for preceding intensifiers or diminishers
-                    if i > 0:
-                        prev_word = words[i-1]
-                        if prev_word in intensifiers:
-                            intensity *= intensifiers[prev_word]
-                        elif prev_word in diminishers:
-                            intensity *= diminishers[prev_word]
-                    
-                    # Check for negations (within 3 words before)
-                    negated = False
-                    for j in range(max(0, i-3), i):
-                        if words[j] in negations:
-                            negated = True
-                            break
-                    
-                    # Apply negation effect (flip to opposite emotion or reduce intensity)
-                    if negated:
-                        if emotion in ["joy", "trust"]:
-                            emotion_scores["sadness"] += intensity * 0.7
-                        elif emotion in ["sadness", "anger", "fear"]:
-                            emotion_scores["neutral"] += intensity * 0.5
-                        else:
-                            emotion_scores[emotion] *= 0.3  # Greatly reduce the emotion
-                    else:
-                        emotion_scores[emotion] += intensity
-        
-        # Normalize emotion scores
-        total_score = sum(emotion_scores.values())
-        if total_score > 0:
-            for emotion in emotion_scores:
-                emotion_scores[emotion] /= total_score
-                result["spectrum"][emotion] = emotion_scores[emotion]
-        else:
-            result["spectrum"] = {emotion: 0.0 for emotion in emotion_lexicons.keys()}
-            result["spectrum"]["neutral"] = 1.0
-        
-        # Determine primary emotion and intensity
-        if total_score > 0:
-            primary_emotion = max(emotion_scores.items(), key=lambda x: x[1])
-            result["primary_emotion"] = primary_emotion[0]
-            result["intensity"] = primary_emotion[1] * min(1.0, total_score / 5.0)  # Scale intensity
-        else:
-            result["primary_emotion"] = "neutral"
-            result["intensity"] = 0.1  # Minimal baseline intensity
-        
-        return result
-    
-    def _assess_complexity(self, text):
-        """Advanced assessment of message complexity with multiple dimensions"""
-        # Initialize complexity assessment result
-        result = {
-            "level": "medium",
-            "score": 0.5,
-            "conceptual_density": 0.0,
-            "linguistic_complexity": 0.0,
-            "cognitive_load": 0.0
-        }
-        
-        # Basic text statistics
+        # Simple noun phrases (very simplified version)
         words = text.split()
-        word_count = len(words)
-        avg_word_length = sum(len(word) for word in words) / max(1, word_count)
-        sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
-        sentence_count = len(sentences)
-        avg_sentence_length = word_count / max(1, sentence_count)
+        for i in range(len(words) - 1):
+            if words[i].lower() in ["the", "a", "an"] and len(words[i+1]) > 3:
+                topics.append(words[i+1])
         
-        # Complex word indicators
-        complex_word_patterns = [
-            r'\w{12,}',  # Very long words
-            r'\w+tion\b', r'\w+sion\b', r'\w+ism\b',  # Abstract concepts
-            r'\w+ology\b', r'\w+ity\b', r'\w+ment\b',  # Academic terms
-            r'\w+ness\b', r'\w+ance\b', r'\w+ence\b'   # Abstract qualities
-        ]
-        
-        complex_words = []
-        for pattern in complex_word_patterns:
-            complex_words.extend(re.findall(pattern, text.lower()))
-        
-        complex_word_ratio = len(complex_words) / max(1, word_count)
-        
-        # Conceptual terms (abstract concepts that require deeper processing)
-        conceptual_terms = [
-            "concept", "theory", "framework", "paradigm", "philosophy", "principle",
-            "hypothesis", "analysis", "synthesis", "perspective", "context", "structure",
-            "function", "process", "system", "mechanism", "dimension", "factor",
-            "variable", "correlation", "causation", "implication", "inference", "logic",
-            "reasoning", "argument", "evidence", "validity", "fallacy", "premise",
-            "conclusion", "abstraction", "concrete", "relative", "absolute", "objective",
-            "subjective", "empirical", "theoretical", "practical", "ethical", "moral",
-            "aesthetic", "epistemological", "ontological", "metaphysical", "existential"
-        ]
-        
-        conceptual_term_count = sum(1 for word in words if word.lower() in conceptual_terms)
-        conceptual_density = conceptual_term_count / max(1, word_count)
-        
-        # Linguistic complexity indicators
-        linguistic_markers = {
-            "conjunctions": ["and", "but", "or", "so", "yet", "however", "therefore", "thus", "although", "since", "while"],
-            "prepositions": ["in", "on", "at", "by", "with", "from", "to", "for", "about", "through", "between"],
-            "pronouns": ["i", "you", "he", "she", "it", "we", "they", "me", "him", "her", "us", "them"],
-            "articles": ["a", "an", "the"],
-            "quantifiers": ["some", "many", "few", "several", "most", "all", "any", "each", "every"]
-        }
-        
-        # Count linguistic markers
-        marker_counts = {category: 0 for category in linguistic_markers}
-        for word in words:
-            word_lower = word.lower()
-            for category, markers in linguistic_markers.items():
-                if word_lower in markers:
-                    marker_counts[category] += 1
-        
-        # Calculate linguistic diversity (higher diversity = more complex)
-        linguistic_diversity = sum(count > 0 for count in marker_counts.values()) / len(marker_counts)
-        
-        # Calculate conjunction density (more conjunctions = more complex relationships)
-        conjunction_density = marker_counts["conjunctions"] / max(1, word_count)
-        
-        # Combine factors for linguistic complexity
-        linguistic_complexity = (
-            0.3 * (avg_sentence_length / 20) +  # Normalize to ~0.3 for 20-word sentences
-            0.3 * (avg_word_length / 6) +       # Normalize to ~0.3 for 6-letter words
-            0.2 * complex_word_ratio +          # Complex word contribution
-            0.1 * linguistic_diversity +        # Linguistic diversity contribution
-            0.1 * conjunction_density           # Conjunction density contribution
-        )
-        
-        # Cognitive load calculation
-        cognitive_load = (
-            0.4 * linguistic_complexity +      # Linguistic complexity contribution
-            0.3 * conceptual_density +         # Conceptual density contribution
-            0.2 * (word_count / 100) +         # Message length contribution (normalized to ~0.2 for 100 words)
-            0.1 * (1 - marker_counts["pronouns"] / max(1, word_count))  # Less pronouns = more cognitive load
-        )
-        
-        # Determine complexity level and score
-        complexity_score = min(0.95, max(0.05, (linguistic_complexity + conceptual_density + cognitive_load) / 3))
-        
-        if complexity_score < 0.3:
-            complexity_level = "simple"
-        elif complexity_score < 0.6:
-            complexity_level = "medium"
-        else:
-            complexity_level = "complex"
-        
-        # Populate result
-        result["level"] = complexity_level
-        result["score"] = complexity_score
-        result["conceptual_density"] = conceptual_density
-        result["linguistic_complexity"] = linguistic_complexity
-        result["cognitive_load"] = cognitive_load
-        
-        return result
-    
-    def _calculate_contextual_depth(self, conversation_context):
-        """Calculate the contextual depth of the current conversation"""
-        if not conversation_context:
-            return 0.0
-            
-        # Factors that contribute to contextual depth
-        context_length = len(conversation_context) if isinstance(conversation_context, list) else 1
-        
-        # More context messages = deeper context, but with diminishing returns
-        length_factor = min(0.8, np.log(1 + context_length) / 5)
-        
-        # Check for recurring themes or topics if context is a list of messages
-        theme_continuity = 0.0
-        if isinstance(conversation_context, list) and len(conversation_context) > 1:
-            # Extract topics from each context message
-            context_topics = []
-            for ctx_msg in conversation_context[-min(5, len(conversation_context)):]:  # Look at last 5 messages max
-                if isinstance(ctx_msg, str):
-                    topics = self._extract_topics(ctx_msg)
-                    context_topics.append(topics)
-                elif isinstance(ctx_msg, dict) and "text" in ctx_msg:
-                    topics = self._extract_topics(ctx_msg["text"])
-                    context_topics.append(topics)
-            
-            # Calculate topic overlap between consecutive messages
-            topic_overlaps = []
-            for i in range(len(context_topics) - 1):
-                set1 = set(context_topics[i])
-                set2 = set(context_topics[i + 1])
-                if set1 and set2:  # Ensure non-empty sets
-                    overlap = len(set1.intersection(set2)) / max(1, min(len(set1), len(set2)))
-                    topic_overlaps.append(overlap)
-            
-            # Average topic continuity
-            if topic_overlaps:
-                theme_continuity = sum(topic_overlaps) / len(topic_overlaps)
-        
-        # Combine factors for overall contextual depth
-        contextual_depth = length_factor * 0.6 + theme_continuity * 0.4
-        return min(1.0, contextual_depth)
-    
-    def _assess_temporal_relevance(self, message_text):
-        """Assess how time-sensitive or temporally relevant a message is"""
-        # Time-related keywords and their weights
-        temporal_keywords = {
-            "now": 0.9, "today": 0.8, "tonight": 0.8, "this morning": 0.8, "this afternoon": 0.8,
-            "this evening": 0.8, "right now": 0.9, "immediately": 0.9, "instantly": 0.9,
-            "currently": 0.7, "presently": 0.7, "at the moment": 0.7, "as we speak": 0.8,
-            "tomorrow": 0.6, "next week": 0.5, "soon": 0.6, "shortly": 0.6,
-            "yesterday": 0.4, "last week": 0.3, "recently": 0.5, "earlier": 0.4,
-            "later": 0.5, "eventually": 0.3, "someday": 0.2, "in the future": 0.3
-        }
-        
-        # Time-sensitive action verbs
-        urgency_verbs = {
-            "need": 0.7, "must": 0.8, "should": 0.6, "have to": 0.7, "require": 0.6,
-            "urgent": 0.9, "emergency": 0.9, "critical": 0.8, "important": 0.7,
-            "hurry": 0.8, "rush": 0.8, "quick": 0.7, "fast": 0.7, "rapid": 0.7,
-            "deadline": 0.8, "due": 0.7, "overdue": 0.8
-        }
-        
-        # Check for temporal keywords and urgency indicators
-        message_lower = message_text.lower()
-        
-        # Calculate temporal relevance score
-        temporal_score = 0.0
-        matched_terms = 0
-        
-        # Check for temporal keywords
-        for keyword, weight in temporal_keywords.items():
-            if keyword in message_lower:
-                temporal_score += weight
-                matched_terms += 1
-        
-        # Check for urgency verbs
-        for verb, weight in urgency_verbs.items():
-            if verb in message_lower:
-                temporal_score += weight
-                matched_terms += 1
-        
-        # Normalize score
-        if matched_terms > 0:
-            temporal_score = temporal_score / matched_terms
-        else:
-            # Default moderate temporal relevance if no explicit time indicators
-            temporal_score = 0.3
-        
-        return min(1.0, temporal_score)
-    
-    def _detect_dialectical_tension(self, message_text, conversation_context):
-        """Detect dialectical tensions or contradictions in the conversation"""
-        if not conversation_context:
-            return 0.0
-            
-        # Contradiction indicators
-        contradiction_phrases = [
-            "but", "however", "although", "nevertheless", "nonetheless", "yet", "still",
-            "on the other hand", "conversely", "in contrast", "instead", "rather",
-            "despite", "in spite of", "regardless", "even though", "whereas"
-        ]
-        
-        # Opposing concept pairs that might indicate dialectical tension
-        opposing_concepts = [
-            ("good", "bad"), ("right", "wrong"), ("true", "false"), ("yes", "no"),
-            ("always", "never"), ("everything", "nothing"), ("everyone", "no one"),
-            ("love", "hate"), ("agree", "disagree"), ("accept", "reject"),
-            ("positive", "negative"), ("advantage", "disadvantage"), ("pro", "con"),
-            ("support", "oppose"), ("increase", "decrease"), ("more", "less"),
-            ("create", "destroy"), ("begin", "end"), ("start", "stop"),
-            ("open", "close"), ("include", "exclude"), ("allow", "forbid")
-        ]
-        
-        # Check for contradiction indicators
-        message_lower = message_text.lower()
-        contradiction_score = 0.0
-        
-        # Check for contradiction phrases
-        for phrase in contradiction_phrases:
-            if f" {phrase} " in f" {message_lower} ":
-                contradiction_score += 0.3
-                break  # Only count once even if multiple phrases are present
-        
-        # Check for opposing concepts
-        for concept1, concept2 in opposing_concepts:
-            if concept1 in message_lower and concept2 in message_lower:
-                contradiction_score += 0.4
-                break  # Only count once even if multiple oppositions are present
-        
-        # Check for self-contradiction within the message
-        sentences = [s.strip().lower() for s in re.split(r'[.!?]+', message_lower) if s.strip()]
-        if len(sentences) > 1:
-            for i in range(len(sentences)):
-                for j in range(i+1, len(sentences)):
-                    # Check if one sentence contains a negation of something in another sentence
-                    words_i = set(sentences[i].split())
-                    words_j = set(sentences[j].split())
-                    
-                    # Check for "not" + same word in different sentences
-                    if "not" in words_i or "no" in words_i or "don't" in words_i or "doesn't" in words_i:
-                        common_words = words_i.intersection(words_j)
-                        if common_words:
-                            contradiction_score += 0.3
-                            break
-        
-        # Check for contradiction with previous context
-        if isinstance(conversation_context, list) and conversation_context:
-            last_message = conversation_context[-1]
-            if isinstance(last_message, str):
-                last_message_lower = last_message.lower()
-            elif isinstance(last_message, dict) and "text" in last_message:
-                last_message_lower = last_message["text"].lower()
-            else:
-                last_message_lower = ""
-                
-            # Check for direct contradiction indicators between messages
-            for phrase in contradiction_phrases:
-                if f" {phrase} " in f" {message_lower} ":
-                    contradiction_score += 0.2
-                    break
-            
-            # Check for opposing concepts between current and previous message
-            for concept1, concept2 in opposing_concepts:
-                if (concept1 in message_lower and concept2 in last_message_lower) or \
-                   (concept2 in message_lower and concept1 in last_message_lower):
-                    contradiction_score += 0.3
-                    break
-        
-        return min(1.0, contradiction_score)
-    
-    def _are_terms_related(self, term1, term2):
-        """Determine if two terms are semantically related"""
-        # Direct substring match
-        if term1.lower() in term2.lower() or term2.lower() in term1.lower():
-            return True
-            
-        # Known related term pairs
-        related_terms = {
-            "ai": ["artificial intelligence", "machine learning", "neural network", "deep learning", "algorithm"],
-            "computer": ["laptop", "desktop", "pc", "mac", "hardware", "software"],
-            "internet": ["web", "online", "website", "browser", "network"],
-            "science": ["physics", "chemistry", "biology", "research", "experiment"],
-            "art": ["painting", "drawing", "sculpture", "creativity", "design"],
-            "music": ["song", "melody", "rhythm", "instrument", "concert"],
-            "philosophy": ["ethics", "metaphysics", "logic", "epistemology", "ontology"],
-            "game": ["play", "gaming", "entertainment", "fun", "competition"],
-            "book": ["novel", "reading", "literature", "story", "author"],
-            "movie": ["film", "cinema", "actor", "director", "scene"],
-            "nature": ["environment", "ecology", "wildlife", "outdoors", "planet"],
-            "technology": ["tech", "innovation", "digital", "electronic", "gadget"]
-        }
-        
-        # Check if terms are in related groups
-        term1_lower = term1.lower()
-        term2_lower = term2.lower()
-        
-        for key, related in related_terms.items():
-            if (term1_lower == key or term1_lower in related) and (term2_lower == key or term2_lower in related):
-                return True
-        
-        # Character-level similarity for short terms
-        if len(term1) < 10 and len(term2) < 10:
-            common_chars = set(term1_lower) & set(term2_lower)
-            if len(common_chars) >= min(len(term1) * 0.7, len(term2) * 0.7):
-                return True
-        
-        return False
-    
-    def _apply_metacognitive_filters(self, analysis):
-        """Apply metacognitive filters to refine analysis based on higher-order reasoning"""
-        # Initialize metacognitive override results
-        metacognitive_result = {
-            "applied_filters": [],
-            "adjusted_values": {},
-            "reasoning": []
-        }
-        
-        # 1. Emotional intensity moderation filter
-        if "emotional_intensity" in analysis and analysis["emotional_intensity"] > 0.8:
-            # Check if the high emotion is justified by content
-            if "complexity_score" in analysis and analysis["complexity_score"] > 0.7:
-                # Complex content with high emotion might be overestimated
-                metacognitive_result["adjusted_values"]["emotional_intensity"] = analysis["emotional_intensity"] * 0.8
-                metacognitive_result["applied_filters"].append("emotional_intensity_moderation")
-                metacognitive_result["reasoning"].append(
-                    "High emotional intensity moderated due to complex content suggesting nuanced rather than purely emotional response"
-                )
-        
-        # 2. Contextual coherence filter
-        if "contextual_depth" in analysis and "topics" in analysis:
-            if analysis["contextual_depth"] > 0.7 and len(analysis["topics"]) > 5:
-                # Many topics with deep context might indicate topic drift
-                primary_topics = analysis["topics"][:3]  # Focus on top 3 topics
-                metacognitive_result["adjusted_values"]["focused_topics"] = primary_topics
-                metacognitive_result["applied_filters"].append("contextual_coherence")
-                metacognitive_result["reasoning"].append(
-                    "Applied topic focusing due to potential topic drift in a deep contextual conversation"
-                )
-        
-        # 3. Cognitive dissonance detection
-        if "dialectical_tension" in analysis and analysis["dialectical_tension"] > 0.6:
-            # High dialectical tension might indicate cognitive dissonance
-            metacognitive_result["adjusted_values"]["cognitive_dissonance"] = True
-            metacognitive_result["applied_filters"].append("cognitive_dissonance_detection")
-            metacognitive_result["reasoning"].append(
-                "Detected potential cognitive dissonance due to high dialectical tension in message"
-            )
-        
-        # 4. Temporal relevance adjustment
-        if "temporal_relevance" in analysis and "contextual_depth" in analysis:
-            # Adjust temporal relevance based on conversation depth
-            if analysis["contextual_depth"] > 0.8 and analysis["temporal_relevance"] < 0.4:
-                # Deep conversations might have implicit temporal relevance
-                metacognitive_result["adjusted_values"]["temporal_relevance"] = analysis["temporal_relevance"] + 0.2
-                metacognitive_result["applied_filters"].append("temporal_relevance_adjustment")
-                metacognitive_result["reasoning"].append(
-                    "Increased temporal relevance due to deep contextual conversation suggesting ongoing importance"
-                )
-        
-        # 5. Epistemic curiosity modulation
-        if "epistemic_curiosity" in analysis and "complexity_score" in analysis:
-            if analysis["epistemic_curiosity"] > 0.8 and analysis["complexity_score"] < 0.3:
-                # High curiosity about simple topics might be overestimated
-                metacognitive_result["adjusted_values"]["epistemic_curiosity"] = analysis["epistemic_curiosity"] * 0.8
-                metacognitive_result["applied_filters"].append("curiosity_modulation")
-                metacognitive_result["reasoning"].append(
-                    "Moderated high epistemic curiosity for relatively simple content"
-                )
-        
-        # 6. Initiative threshold dynamic adjustment
-        if "requires_initiative" in analysis and analysis["requires_initiative"]:
-            # Check if we have sufficient context to justify initiative
-            if "contextual_depth" in analysis and analysis["contextual_depth"] < 0.4:
-                # Low context depth might make initiative premature
-                metacognitive_result["adjusted_values"]["requires_initiative"] = False
-                metacognitive_result["applied_filters"].append("initiative_threshold_adjustment")
-                metacognitive_result["reasoning"].append(
-                    "Suppressed initiative due to insufficient contextual depth for confident action"
-                )
-        
-        # 7. Conceptual integration filter
-        if "conceptual_density" in analysis and analysis["conceptual_density"] > 0.7:
-            # High concept density might need integration with existing knowledge
-            metacognitive_result["adjusted_values"]["requires_knowledge_integration"] = True
-            metacognitive_result["applied_filters"].append("conceptual_integration")
-            metacognitive_result["reasoning"].append(
-                "Flagged need for knowledge integration due to high conceptual density"
-            )
-            
-        return metacognitive_result
+        # Remove duplicates and common words
+        common_words = {"what", "when", "where", "which", "who", "how", "why", "yes", "no", "maybe", "could", "would"}
+        topics = [t for t in topics if t.lower() not in common_words]
+        topics = list(set(topics))
         
         return topics[:5]  # Return top 5 unique topics
     
@@ -1133,47 +460,6 @@ class FreeWillSystem:
         return False
     
     def _detect_emotion(self, text):
-        # Gelişmiş duygu analizi için çok katmanlı yaklaşım
-        emotion_vectors = {
-            'joy': {'keywords': ['mutlu', 'heyecan', 'müthiş', 'harika', 'sevindim'], 'decay_rate': 0.95},
-            'sadness': {'keywords': ['üzgün', 'hayal kırıklığı', 'kayıp', 'yıkılmış'], 'decay_rate': 0.92},
-            'anger': {'keywords': ['sinir', 'öfke', 'kızgın', 'hiddet'], 'decay_rate': 0.88},
-            'surprise': {'keywords': ['şaşırdım', 'vay canına', 'inanılmaz'], 'decay_rate': 0.96},
-            'fear': {'keywords': ['korku', 'endişe', 'panik', 'tedirgin'], 'decay_rate': 0.9},
-            'trust': {'keywords': ['güven', 'inanç', 'emin'], 'decay_rate': 0.93},
-            'anticipation': {'keywords': ['beklenti', 'merak', 'umut'], 'decay_rate': 0.94},
-            'disgust': {'keywords': ['tiksinme', 'iğrenme', 'nefret'], 'decay_rate': 0.85}
-        }
-
-        # Konuşma bağlamını dikkate alan dinamik ağırlıklandırma
-        context_impact = 1 + (self.core_values['context_awareness'] * 0.5)
-        temporal_boost = 1 + (self.core_values['temporal_awareness'] * 0.3)
-
-        # Çok boyutlu duygu vektörü hesaplama
-        emotion_profile = defaultdict(float)
-        for emotion, data in emotion_vectors.items():
-            for keyword in data['keywords']:
-                if keyword in text.lower():
-                    emotion_profile[emotion] += \
-                        self.core_values['emotional_depth'] * \
-                        context_impact * \
-                        temporal_boost * \
-                        (1 / (1 + np.exp(-text.count(keyword))))
-
-        # Zamansal bozulma uygula
-        for emotion in emotion_profile:
-            emotion_profile[emotion] *= emotion_vectors[emotion]['decay_rate'] ** \
-                self._get_time_since_last_emotion(emotion)
-
-        # Meta-bilişsel filtreleme
-        if self.core_values['metacognition'] > 0.7:
-            max_emo = max(emotion_profile.values(), default=0)
-            for emo in emotion_profile:
-                emotion_profile[emo] = (emotion_profile[emo] / max_emo) if max_emo > 0 else 0
-
-        # Nöroplastisite etkisi
-        plasticity_effect = 1 + (self.core_values['neuroplasticity_factor'] * 0.5)
-        return {k: v * plasticity_effect for k, v in emotion_profile.items()}
         """Detect emotional tone in text"""
         text_lower = text.lower()
         
