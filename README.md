@@ -131,7 +131,7 @@ Ana bileşenler:
 ### 1. Depoyu Klonlama
 ```bash
 git clone https://github.com/stixyie/Nyxie-Protogen-Chatbot-Telegram-v10-main.git
-cd Nyxie-Protogen-Chatbot-Telegram-v4-main
+cd Nyxie-Protogen-Chatbot-Telegram-v10-main
 ```
 
 ### 2. Sanal Ortam Oluşturma
