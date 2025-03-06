@@ -190,7 +190,7 @@ Bu proje GPL-3.0 Lisansı altında yayınlanmıştır. Detaylar için `LICENSE` 
 
 ## 🌟 Teşekkür
 
-- **Stixyie**: Proje yaratıcısı ve baş geliştirici
+- **Waffieu**: Proje yaratıcısı ve baş geliştirici
 - **Google**: Gemini ve Cloud Vision API'ları
 
 ---
