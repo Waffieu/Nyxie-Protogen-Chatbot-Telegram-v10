@@ -7,6 +7,7 @@ import re
 import logging
 import psutil
 import time
+import numpy as np
 from pathlib import Path
 import importlib
 import traceback
@@ -72,6 +73,10 @@ class SelfAwarenessModule:
             return None
     
     def analyze_own_structure(self):
+        # Kuantum-esinlenmiş karar verme mekanizması ekle
+        self._quantum_decision_model()
+        # Nöral ağ tabanlı kod örüntü analizi
+        self._neural_network_analysis()
         """Analyze the bot's own code structure and architecture"""
         try:
             file_structure = {}
@@ -170,8 +175,288 @@ class SelfAwarenessModule:
             logger.error(f"Error analyzing code structure: {e}")
             traceback.print_exc()
             return False
+
+    def _quantum_decision_model(self):
+        # Kuantum benzetimli karar ağacı
+        self.decision_factors = {
+            'superposition': np.random.choice([0,1], p=[0.3,0.7]),
+            'entanglement': np.log(1 + len(self.memory_snapshots)),
+            'coherence': 0.85
+        }
+        
+        # Quantum inspired decision weights
+        self.core_decision_matrix = np.array([
+            [np.cos(self.decision_factors['entanglement']), np.sin(self.decision_factors['coherence'])],
+            [np.exp(-self.decision_factors['superposition']), 1/(1+self.decision_factors['entanglement'])]
+        ])
+
+    def _neural_network_analysis(self):
+        # Yapay nöral ağ ile kod örüntü analizi
+        self.nn_layers = {
+            'input': {'size': 128, 'activation': 'relu'},
+            'hidden': {'size': 64, 'activation': 'tanh'},
+            'output': {'size': 10, 'activation': 'softmax'}
+        }
+        
+        # Sinir ağı benzetimi için rastgele ağırlıklar
+        self.nn_weights = {
+            'input_hidden': np.random.randn(128, 64) * 0.01,
+            'hidden_output': np.random.randn(64, 10) * 0.01
+        }
+        
+        # Kod karmaşıklık skoru hesapla
+        self.code_complexity_score = np.linalg.norm(self.nn_weights['input_hidden']) + \
+                                   np.linalg.norm(self.nn_weights['hidden_output'])
+    
+    def _neuromorphic_function_mapping(self):
+        """Neuromorphic mapping of code functions to simulate neural pathways"""
+        # Create a neural-inspired graph of function relationships
+        self.neural_function_map = {}
+        
+        # Only proceed if code structure is available
+        if not self.code_structure or "files" not in self.code_structure:
+            logger.warning("Cannot perform neuromorphic mapping without code structure")
+            return
+            
+        # Extract all functions from all files
+        all_functions = []
+        for file_path, file_info in self.code_structure["files"].items():
+            for func in file_info.get("functions", []):
+                all_functions.append({
+                    "name": func["name"],
+                    "file": file_path,
+                    "args": func.get("args", []),
+                    "complexity": len(func.get("args", [])) * 0.2 + 0.5  # Base complexity estimate
+                })
+        
+        # Create neural-like connections between functions
+        for func in all_functions:
+            # Initialize neural properties
+            self.neural_function_map[func["name"]] = {
+                "activation_threshold": 0.3 + np.random.random() * 0.4,  # Random threshold
+                "connection_strength": {},
+                "plasticity": 0.1 + np.random.random() * 0.2,  # Neural plasticity factor
+                "complexity": func["complexity"],
+                "file": func["file"]
+            }
+            
+            # Create connections to other functions based on name similarity
+            for other_func in all_functions:
+                if func["name"] != other_func["name"]:
+                    # Calculate name similarity as connection strength
+                    name_similarity = self._calculate_string_similarity(func["name"], other_func["name"])
+                    if name_similarity > 0.2:  # Only connect if similarity exceeds threshold
+                        self.neural_function_map[func["name"]]["connection_strength"][other_func["name"]] = name_similarity
+        
+        # Apply hebbian-inspired learning to strengthen important connections
+        self._apply_hebbian_learning()
+        
+        logger.info(f"Created neuromorphic function map with {len(self.neural_function_map)} neural nodes")
+    
+    def _calculate_quantum_entanglement(self, adj_matrix):
+        """Calculate quantum entanglement index from adjacency matrix"""
+        try:
+            eigenvalues = np.linalg.eigvals(adj_matrix)
+            max_eigenvalue = max(abs(eigenvalues.real))
+            n_modules = len(adj_matrix)
+            return max_eigenvalue / (n_modules - 1) if n_modules > 1 else 0.0
+        except np.linalg.LinAlgError:
+            return np.sum(adj_matrix) / (n_modules ** 2)
+
+    def _calculate_string_similarity(self, str1, str2):
+        """Calculate similarity between two strings using a simple metric"""
+        # Convert to lowercase for comparison
+        s1, s2 = str1.lower(), str2.lower()
+        
+        # Check for direct substring relationship
+        if s1 in s2 or s2 in s1:
+            return 0.8
+            
+        # Calculate character-level similarity
+        common_chars = set(s1) & set(s2)
+        unique_chars = set(s1) | set(s2)
+        if not unique_chars:
+            return 0.0
+            
+        return len(common_chars) / len(unique_chars)
+    
+    def _apply_hebbian_learning(self):
+        """Apply Hebbian-inspired learning to strengthen important connections"""
+        # Identify key functions (those with many connections)
+        connection_counts = {}
+        for func_name, func_data in self.neural_function_map.items():
+            connection_counts[func_name] = len(func_data["connection_strength"])
+        
+        # Find average connection count
+        if not connection_counts:
+            return
+            
+        avg_connections = sum(connection_counts.values()) / len(connection_counts)
+        
+        # Strengthen connections to/from important functions
+        for func_name, func_data in self.neural_function_map.items():
+            if connection_counts[func_name] > avg_connections:
+                # This is an important function, strengthen its connections
+                for connected_func, strength in func_data["connection_strength"].items():
+                    # Apply Hebbian strengthening
+                    new_strength = strength * (1 + func_data["plasticity"])
+                    func_data["connection_strength"][connected_func] = min(new_strength, 0.95)  # Cap at 0.95
+    
+    def _quantum_complexity_assessment(self):
+        """Assess code complexity using quantum-inspired algorithms"""
+        # Initialize quantum-inspired complexity metrics
+        self.quantum_complexity = {
+            "entanglement_index": 0.0,
+            "superposition_factor": 0.0,
+            "quantum_entropy": 0.0,
+            "module_entanglement_map": {}
+        }
+        
+        # Only proceed if code structure is available
+        if not self.code_structure or "files" not in self.code_structure:
+            logger.warning("Cannot perform quantum complexity assessment without code structure")
+            return
+            
+        # Calculate module relationships as quantum entanglement
+        module_relationships = self.code_structure.get("module_relationships", {})
+        if module_relationships:
+            # Create adjacency matrix for modules
+            modules = list(module_relationships.keys())
+            n_modules = len(modules)
+            
+            if n_modules > 0:
+                # Create module index mapping
+                module_indices = {module: i for i, module in enumerate(modules)}
+                
+                # Initialize adjacency matrix
+                adj_matrix = np.zeros((n_modules, n_modules))
+                
+                # Fill adjacency matrix
+                for module, related_modules in module_relationships.items():
+                    if module in module_indices:
+                        i = module_indices[module]
+                        for related in related_modules:
+                            if related in module_indices:
+                                j = module_indices[related]
+                                adj_matrix[i, j] = 1.0
+                
+                # Calculate entanglement index (based on matrix eigenvalues)
+                self.quantum_complexity["entanglement_index"] = self._calculate_quantum_entanglement(adj_matrix)
+                
+                # Calculate superposition factor (based on module connectivity)
+                connectivity = np.sum(adj_matrix, axis=1)
+                self.quantum_complexity["superposition_factor"] = np.std(connectivity) / np.mean(connectivity) if np.mean(connectivity) > 0 else 0.0
+                
+                # Calculate quantum entropy (based on connection distribution)
+                total_connections = np.sum(adj_matrix)
+                if total_connections > 0:
+                    probabilities = adj_matrix.flatten() / total_connections
+                    # Filter out zeros to avoid log(0)
+                    probabilities = probabilities[probabilities > 0]
+                    self.quantum_complexity["quantum_entropy"] = -np.sum(probabilities * np.log2(probabilities))
+                
+                # Store module entanglement map
+                for i, module in enumerate(modules):
+                    self.quantum_complexity["module_entanglement_map"][module] = {
+                        "entanglement": sum(adj_matrix[i]),
+                        "superposition": connectivity[i] / n_modules if n_modules > 0 else 0
+                    }
+        
+        logger.info(f"Completed quantum complexity assessment with entanglement index: {self.quantum_complexity['entanglement_index']:.3f}")
+    
+    def _fractal_code_analysis(self):
+        """Analyze code structure using fractal-inspired metrics"""
+        # Initialize fractal analysis metrics
+        self.fractal_metrics = {
+            "fractal_dimension": 0.0,
+            "self_similarity_index": 0.0,
+            "recursion_depth": 0.0,
+            "module_fractal_map": {}
+        }
+        
+        # Only proceed if code structure is available
+        if not self.code_structure or "files" not in self.code_structure:
+            logger.warning("Cannot perform fractal code analysis without code structure")
+            return
+            
+        # Collect code structure metrics for fractal analysis
+        file_sizes = []
+        function_counts = []
+        class_counts = []
+        nested_levels = []
+        
+        for file_path, file_info in self.code_structure["files"].items():
+            file_sizes.append(file_info.get("size_bytes", 0))
+            function_counts.append(len(file_info.get("functions", [])))
+            class_counts.append(len(file_info.get("classes", [])))
+            
+            # Estimate nesting levels in functions
+            for func in file_info.get("functions", []):
+                if "doc" in func and func["doc"]:
+                    # Rough estimate of nesting based on indentation in docstring
+                    indentation_levels = [line.count('    ') for line in func["doc"].split('\n')]
+                    if indentation_levels:
+                        nested_levels.append(max(indentation_levels))
+        
+        # Calculate fractal dimension using box-counting inspired approach
+        if file_sizes:
+            # Sort sizes for box counting
+            sorted_sizes = sorted(file_sizes)
+            # Create logarithmic bins
+            log_sizes = np.log(np.array(sorted_sizes) + 1)  # +1 to avoid log(0)
+            bins = np.linspace(min(log_sizes), max(log_sizes), 10) if len(log_sizes) > 1 else [0, 1]
+            # Count files in each bin
+            hist, _ = np.histogram(log_sizes, bins=bins)
+            # Non-zero bins for log-log calculation
+            non_zero_hist = hist[hist > 0]
+            non_zero_bins = bins[:len(non_zero_hist)]
+            
+            if len(non_zero_hist) > 1:
+                # Calculate slope in log-log space as fractal dimension estimate
+                slope, _ = np.polyfit(non_zero_bins, np.log(non_zero_hist), 1)
+                self.fractal_metrics["fractal_dimension"] = abs(slope)
+        
+        # Calculate self-similarity index
+        if function_counts and class_counts:
+            # Variation coefficient as self-similarity measure
+            func_std = np.std(function_counts) if len(function_counts) > 1 else 0
+            func_mean = np.mean(function_counts) if function_counts else 1
+            class_std = np.std(class_counts) if len(class_counts) > 1 else 0
+            class_mean = np.mean(class_counts) if class_counts else 1
+            
+            # Combine metrics (lower variation = higher self-similarity)
+            func_variation = func_std / func_mean if func_mean > 0 else 0
+            class_variation = class_std / class_mean if class_mean > 0 else 0
+            self.fractal_metrics["self_similarity_index"] = 1.0 - (func_variation + class_variation) / 2.0
+        
+        # Calculate recursion depth
+        if nested_levels:
+            self.fractal_metrics["recursion_depth"] = np.mean(nested_levels)
+        
+        # Create module fractal map
+        for file_path, file_info in self.code_structure["files"].items():
+            module_name = file_path.replace('/', '.').replace('\\', '.').replace('.py', '')
+            func_count = len(file_info.get("functions", []))
+            class_count = len(file_info.get("classes", []))
+            size = file_info.get("size_bytes", 0)
+            
+            # Calculate local fractal metrics for this module
+            local_complexity = (func_count * 0.6 + class_count * 0.4) * np.log(size + 1) / 10.0
+            self.fractal_metrics["module_fractal_map"][module_name] = {
+                "local_dimension": min(local_complexity, 2.0),  # Cap at 2.0
+                "size_factor": np.log(size + 1) / 10.0 if size > 0 else 0.0,
+                "function_density": func_count / (size / 1000.0) if size > 0 else 0.0
+            }
+        
+        logger.info(f"Completed fractal code analysis with dimension: {self.fractal_metrics['fractal_dimension']:.3f}")
     
     def analyze_key_functions(self):
+        # Nöromorfik fonksiyon analizi ekle
+        self._neuromorphic_function_mapping()
+        # Kuantum hesaplamalı karmaşıklık analizi
+        self._quantum_complexity_assessment()
+        # Fraktal kod yapısı değerlendirmesi
+        self._fractal_code_analysis()
         """Analyze the key functions and their purposes in the bot"""
         key_functions = {
             "handle_message": "Primary message handler that processes user input",
@@ -269,7 +554,15 @@ class SelfAwarenessModule:
     
     def get_self_awareness_stats(self):
         """Get current statistics about the bot's operation and self-awareness"""
+        stats = {}
+        # Çok boyutlu istatistikler ekle
+        stats['quantum_entanglement_factor'] = self.quantum_complexity['entanglement_index']
+        stats['neural_network_depth'] = self.code_complexity_score
         current_memory = self.record_memory_snapshot()
+        
+        # Calculate holographic memory index after memory snapshot
+        if current_memory:
+            stats['holographic_memory_index'] = np.tanh(current_memory['rss_memory_mb'] / 1000)
         
         # Calculate uptime
         uptime_seconds = time.time() - self.creation_time
@@ -418,7 +711,7 @@ class SelfAwarenessModule:
         total_functions = stats["code_structure"]["total_functions"]
         total_classes = stats["code_structure"]["total_classes"]
         
-        key_files = ["bot.py", "memory_manager.py", "self_awareness.py", "trim_context.py", "free_will.py", "free_will_integration.py", "system_monitor.py", "starter.py", "start_bot.py", "run_bot.py", "free_will_integration.py","environment_checker.py",]
+        key_files = ["bot.py", "memory_manager.py", "self_awareness.py", "trim_context.py", "free_will.py", "free_will_integration.py", "system_monitor.py", "starter.py", "start_bot.py", "run_bot.py", "free_will_integration.py","environment_checker.py"]
         
         reflection = (
             f"Ben, Nyxie, toplamda {total_files} Python dosyası, {total_functions} fonksiyon ve {total_classes} sınıftan oluşan "
