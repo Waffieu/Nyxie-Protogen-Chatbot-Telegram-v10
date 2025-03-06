@@ -52,22 +52,24 @@ Nyxie, sadece bir chatbot değil, aynı zamanda:
 - Arama sonuçlarını akıllıca analiz etme
 - Çoklu kaynaklardan bilgi toplama ve özetleme
 
-### 4. 🖼️ Görüntü ve Video İşleme
-- Gönderilen görüntüleri ve videoları analiz etme
-- Google Cloud Vision API ile görüntü tanıma
-- Multimedya içeriği hakkında detaylı açıklama üretme
-- Görsel içerik bağlamını anlama ve yorumlama
+### 4. 🖼️ Gelişmiş Multimedya İşleme
+- Google Cloud Vision API ile gerçek zamanlı görüntü analizi
+- EXIF meta veri çözümleme ve coğrafi konum tespiti
+- PIL (Pillow) tabanlı görüntü ön işleme
+- Base64 kodlama/dekodlama ile verimli görsel iletim
+- Çoklu format desteği (JPEG, PNG, WEBP, GIF)
+- Görsel bağlamına göre dinamik yanıt üretme
+- NSFW içerik filtresi ve otomatik moderasyon
 
 ### 5. 🧠 Gelişmiş Semantik Bellek Sistemi
-- Semantik benzerlik tabanlı konuşma hatırlama
-- Kullanıcı sorguları ile ilgili geçmiş konuşmaları akıllıca bulma
-- SentenceTransformer ile gelişmiş vektör temsili
-- Konu ve anlam tabanlı bellek indeksleme
-- Konuşma segmentlerini otomatik tanımlama
-- Ebbinghaus unutma eğrisine dayalı zamansal bellek modeli
-- İnsan belleği modelini taklit eden çoklu faktör tabanlı hatırlama
-- Otomatik bellek optimizasyonu ve akıllı bağlam yönetimi
-- Anlamlı konuları otomatik çıkarma ve ilişkilendirme
+- SentenceTransformer (all-MiniLM-L6-v2) ile 384 boyutlu vektör temsili
+- TF-IDF ve kosinüs benzerliği ile çift katmanlı bellek tarama
+- Otomatik konu kümeleme ve zaman damgalı indeksleme
+- Ebbinghaus unutma eğrisi entegrasyonlu bellek optimizasyonu
+- GPU hızlandırmalı (CUDA) gömme işlemleri
+- JSON tabanlı kalıcı bellek depolama ve otomatik yedekleme
+- Bağlamsal öncelik skorlamalı bellek geri çağırma
+- Çoklu dil desteği ile semantik indeksleme
 
 ### 6. 📋 Akıllı Bellek Yönetimi
 - Token limitini aşmadan maksimum bağlam koruma
@@ -98,31 +100,38 @@ Nyxie, sadece bir chatbot değil, aynı zamanda:
 - İnternet bağlantısı (API erişimi için)
 
 ### Gerekli Kütüphaneler
-- python-telegram-bot
-- google-generativeai
-- python-dotenv
-- requests
-- geopy
-- timezonefinder
-- emoji
-- langdetect
-- Pillow
-- httpx
+- python-telegram-bot>=20.0
+- google-generativeai>=0.3.0
+- python-dotenv>=0.19.0
+- duckduckgo-search>=3.0.0
+- requests>=2.27.0
+- beautifulsoup4>=4.10.0
+- emoji>=2.0.0
+- langdetect>=1.0.9
+- pillow>=9.0.0
 - google-cloud-vision
-- sentence-transformers
-- scikit-learn
-- numpy
-- torch
-- duckduckgo_search
-- beautifulsoup4
+- protobuf
+- pytz>=2022.1
+- geopy>=2.2.0
+- timezonefinder>=6.0.0
+- pytz-deprecation-shim
+- tzlocal
+- pydantic
+- numpy>=1.20.0
+- scikit-learn>=1.0.0
+- sentence-transformers>=2.2.2
+- tf-keras
+- torch>=1.10.0
 
 ## 🧠 Mimari Yapı
 Ana bileşenler:
-- `bot.py`: Ana kontrol ve Telegram entegrasyonu
-- `memory_manager.py`: Semantik bellek yönetimi
-- `self_awareness.py`: Öz-farkındalık ve sistem izleme
-- `system_monitor.py`: Performans metriklari ve kaynak yönetimi
-- `free_will_integration.py`: Dinamik karar alma mekanizmaları
+- `bot.py`: Telegram entegrasyonu ve ana iletişim katmanı
+- `memory_manager.py`: Semantik bellek yönetimi ve vektör tabanlı hatırlama sistemi
+- `self_awareness.py`: Sistem sağlığı izleme ve performans optimizasyonu
+- `free_will_integration.py`: Dinamik karar alma ve davranış modülasyonu
+- `system_monitor.py`: Gerçek zamanlı kaynak izleme (CPU, RAM, Disk)
+- `environment_checker.py`: Bağımlılık ve sistem uyumluluk kontrolü
+- `free_will.py`: Otonom karar mekanizmaları ve kişilik profili yönetimi
 
 ## 🔧 Kurulum
 
