@@ -117,8 +117,6 @@ Nyxie, sadece bir chatbot değil, aynı zamanda:
 - beautifulsoup4
 
 ## 🧠 Mimari Yapı
-![Nyxie Architecture]
-
 Ana bileşenler:
 - `bot.py`: Ana kontrol ve Telegram entegrasyonu
 - `memory_manager.py`: Semantik bellek yönetimi
